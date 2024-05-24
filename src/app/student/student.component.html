@@ -22,16 +22,16 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>Maty</td>
-            <td>SAKHO</td>
-            <td>feminin</td>
-            <td>2020-01-01</td>
-            <td>TS2</td>
+        <tr *ngFor="let data of allstudent">
+            <td>{{data.id}}</td>
+            <td>{{data.prenom}}</td>
+            <td>{{data.nom}}</td>
+            <td>{{data.sexe}}</td>
+            <td>{{data.dateNaissance}}</td>
+            <td>{{data.classe}}</td>
             <td>
-                <button class="btn btn-info" (click)="update()" data-bs-toggle="modal" data-bs-target="#exampleModal">Modifier</button>&nbsp;
-                <button class="btn btn-danger">Supprimer</button>
+                <button class="btn btn-info" (click)="edit(data)" data-bs-toggle="modal" data-bs-target="#exampleModal">Modifier</button>&nbsp;
+                <button class="btn btn-danger" (click)="deletestudent(data)">Supprimer</button>
             </td>
         </tr>
     </tbody>
@@ -84,8 +84,8 @@
         </div>
         <div style="background-color: blue;" class="modal-footer">
           <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Fermer</button>
-          <button *ngIf="showadd" type="button" class="btn btn-success">Ajouter</button>
-          <button *ngIf="showupdate" type="button" class="btn btn-success">Mise a jour</button>
+          <button *ngIf="showadd" type="button" (click)="addstudent()" class="btn btn-success">Ajouter</button>
+          <button *ngIf="showupdate" type="button" (click)="update()" class="btn btn-success">Mise a jour</button>
         </div>
       </div>
     </div>

@@ -1,19 +1,46 @@
 {
-    "posts": [
-        {
-            "id": 1,
-            "title": "json-server",
-            "author": "maty"
-        }
-    ],
-    "comments": [
-        {
-            "id": 1,
-            "body": "some comment",
-            "postId": 1
-        }
-    ],
-    "profile": {
-        "name": "typicode"
+  "posts": [
+    {
+      "id": 0,
+      "prenom": "fatou",
+      "nom": "diop",
+      "sexe": "f",
+      "dateNaissance": "1999-05-23",
+      "classe": "ts2"
+    },
+    {
+      "id": 0,
+      "prenom": "khady",
+      "nom": "ndiaye",
+      "sexe": "f",
+      "dateNaissance": "2002-04-04",
+      "classe": "seconde"
+    },
+    {
+      "id": 0,
+      "prenom": "maty",
+      "nom": "sakho",
+      "sexe": "feminin",
+      "dateNaissance": "2002-01-24",
+      "classe": "ts2"
+    },
+    {
+      "id": 0,
+      "prenom": "ff",
+      "nom": "bb",
+      "sexe": "cc",
+      "dateNaissance": "5552-04-23",
+      "classe": "dd"
     }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
 }
