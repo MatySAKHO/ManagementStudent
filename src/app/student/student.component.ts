@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Student } from './student.model';
+import { Student, Sexe, Classe, Serie } from './student.model';
 import { ApiService } from '../shared/api.service';
 
 @Component({
@@ -8,95 +8,100 @@ import { ApiService } from '../shared/api.service';
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.css']
 })
-export class StudentComponent implements OnInit{
+export class StudentComponent implements OnInit {
 
-  showadd!:boolean;
-  showupdate!:boolean;
-  studentModelObj:Student=new Student;
-  formValue!:FormGroup
-  allstudent!:any;
+  showAdd!: boolean;
+  showUpdate!: boolean;
+  studentModelObj: Student = new Student();
+  formValue!: FormGroup;
+  allStudents!: any[];
 
-  constructor (private formBuilder:FormBuilder, private api:ApiService) { }
+  constructor(private formBuilder: FormBuilder, private api: ApiService) { }
 
   ngOnInit(): void {
-    this.formValue=this.formBuilder.group({
-   
-      prenom:['',Validators.required],
-      nom:['',Validators.required],
-      sexe:['',Validators.required],
-      dateNaissance:['',Validators.required],
-      classe:['',Validators.required]
-      
-    })
-    this.getdata();
-  }
-  add(){
-    this.showadd=true;
-    this.showupdate=false;
-  }
-  edit(data:any){
-    this.showupdate=true;
-    this.showadd=false;
-    this.studentModelObj.id=data.id;
-    this.formValue.controls['prenom'].setValue(data.prenom);
-    this.formValue.controls['nom'].setValue(data.nom);
-    this.formValue.controls['sexe'].setValue(data.sexe);  
-    this.formValue.controls['dateNaissance'].setValue(data.dateNaissance);
-    this.formValue.controls['classe'].setValue(data.classe);
-    //this.studentModelObj.id=data.id;
+    this.formValue = this.formBuilder.group({
+      prenom: ['', Validators.required],
+      nom: ['', Validators.required],
+      sexe: ['', Validators.required],
+      dateNaissance: ['', Validators.required],
+      classe: ['', Validators.required],
+      serie: ['', Validators.required] // Added serie field
+    });
+    this.getData();
   }
 
-  //update avec put
-  update(){
-    this.studentModelObj.prenom=this.formValue.value.prenom;
-    this.studentModelObj.nom=this.formValue.value.nom;
-    this.studentModelObj.sexe=this.formValue.value.sexe;
-    this.studentModelObj.dateNaissance=this.formValue.value.dateNaissance;
-    this.studentModelObj.classe=this.formValue.value.classe;
-    this.api.updatestudent(this.studentModelObj,this.studentModelObj.id)
-    .subscribe(res=>{
-      this.formValue.reset();
-      this.getdata();
-      alert("mise a jour avec succes");
-    },
-    err=>{
-      alert("echec de la mise a jour");
+  addStudentForm() {
+    this.showAdd = true;
+    this.showUpdate = false;
+  }
+
+  editStudentForm(student: Student) {
+    this.showUpdate = true;
+    this.showAdd = false;
+    this.studentModelObj = { ...student };
+    this.formValue.setValue({
+      prenom: student.prenom,
+      nom: student.nom,
+      sexe: student.sexe,
+      dateNaissance: student.dateNaissance,
+      classe: student.classe,
+      serie: student.serie // Set serie value
+    });
+  }
+
+  updateStudent() {
+    this.studentModelObj = { ...this.formValue.value, id: this.studentModelObj.id };
+    this.api.updateStudent(this.studentModelObj, this.studentModelObj.id)
+      .subscribe({
+        next: (res) => {
+          this.formValue.reset();
+          this.getData();
+          alert("Student updated successfully");
+        },
+        error: () => {
+          alert("Failed to update student");
+        }
+      });
+  }
+
+  addStudent() {
+    this.studentModelObj = { ...this.formValue.value };
+    this.api.postStudent(this.studentModelObj).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.formValue.reset();
+        alert("Student added successfully");
+        this.getData();
+      },
+      error: () => {
+        alert("Failed to add student");
+      }
+    });
+  }
+
+  getData() {
+    this.api.getStudents().subscribe({
+      next: (res: any[]) => {
+        this.allStudents = res;
+      },
+      error: () => {
+        alert("Failed to fetch students");
+      }
+    });
+  }
+
+  deleteStudent(student: Student) {
+    if (confirm(`Are you sure you want to delete ${student.prenom}?`)) {
+      this.api.deleteStudent(student.id).subscribe({
+        next: (res) => {
+          alert("Student deleted successfully");
+          this.getData();
+        },
+        error: () => {
+          alert("Failed to delete student");
+        }
+      });
     }
-    
-  )
-  }
-
-  addstudent(){
-    this.studentModelObj.prenom=this.formValue.value.prenom;
-    this.studentModelObj.nom=this.formValue.value.nom;
-    this.studentModelObj.sexe=this.formValue.value.sexe;
-    this.studentModelObj.dateNaissance=this.formValue.value.dateNaissance;
-    this.studentModelObj.classe=this.formValue.value.classe;
-
-    this.api.poststudent(this.studentModelObj).subscribe(res=>{
-      console.log(res);
-      this.formValue.reset();
-      alert("ajouter avec succes");
-      this.getdata();
-    },
-    err=>{
-      alert("echec de l'ajout");
-    })
-}
-
-  getdata(){ 
-    this.api.getstudent().subscribe(res=>{
-      this.allstudent=res;
-    })
-  }
-
-  //supprimer avec delete
-  deletestudent(data:any){
-    if(confirm("etes vous sure de supprimer "+data.prenom))
-    this.api.deletestudent(data.id)
-  .subscribe(res=>{
-      alert("supprimer avec succes");
-      this.getdata();
-    })
   }
 }
+
