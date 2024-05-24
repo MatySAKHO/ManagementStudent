@@ -1,0 +1,92 @@
+<nav class="navbar navbar-light bg-dark">
+    <div class="container-fluid">
+        <h2 class="text-light primary py-3">Lycée d'Excellence de Dakar</h2>
+        <div class="d-flex">
+            <button class="btn btn-success" (click)="add()" data-bs-toggle="modal" data-bs-target="#exampleModal">Ajouter</button>&nbsp;
+            <button class="btn btn-warning">Deconnexion</button>
+        </div>
+    </div>
+</nav>
+
+<!-- table des eleves-->
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Prenom</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Sexe</th>
+            <th scope="col">Date de Naissance</th>
+            <th scope="col">Classe</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Maty</td>
+            <td>SAKHO</td>
+            <td>feminin</td>
+            <td>2020-01-01</td>
+            <td>TS2</td>
+            <td>
+                <button class="btn btn-info" (click)="update()" data-bs-toggle="modal" data-bs-target="#exampleModal">Modifier</button>&nbsp;
+                <button class="btn btn-danger">Supprimer</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div style="background-color: blue;" class="modal-header">
+          <h5 style="color:aliceblue; font-size:20px;margin-left:62px;font-weight:620;" class="modal-title" id="exampleModalLabel">Gerer un eleve</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+            <form [formGroup]="formValue">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Prenom</label>
+                  <input type="prenom" formControlName="prenom" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="votre prenom">
+                  <small *ngIf="formValue.get('prenom')?.invalid && formValue.get('prenom')?.touched" class="text-danger">Ce champ est obligatoire</small>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Nom</label>
+                    <input type="nom" formControlName="nom" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="votre nom">
+                    <small *ngIf="formValue.get('nom')?.invalid && formValue.get('nom')?.touched" class="text-danger">Ce champ est obligatoire</small>
+                </div>
+                  <br>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Sexe</label>
+                    <input type="sexe" formControlName="sexe" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="votre sexe">
+                    <small *ngIf="formValue.get('sexe')?.invalid && formValue.get('sexe')?.touched" class="text-danger">Ce champ est obligatoire</small>
+                </div>
+                  <br>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Date de Naissance</label>
+                    <input type="date" formControlName="dateNaissance" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="votre date de naissance">
+                    <small *ngIf="formValue.get('dateNaissance')?.invalid && formValue.get('dateNaissance')?.touched" class="text-danger">Ce champ est obligatoire</small>
+                </div>
+                  <br>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Classe</label>
+                    <input type="classe" formControlName="classe" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="votre classe">
+                    <small *ngIf="formValue.get('classe')?.invalid && formValue.get('classe')?.touched" class="text-danger">Ce champ est obligatoire</small>
+                </div>
+              </form>
+
+        </div>
+        <div style="background-color: blue;" class="modal-footer">
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Fermer</button>
+          <button *ngIf="showadd" type="button" class="btn btn-success">Ajouter</button>
+          <button *ngIf="showupdate" type="button" class="btn btn-success">Mise a jour</button>
+        </div>
+      </div>
+    </div>
+  </div>
