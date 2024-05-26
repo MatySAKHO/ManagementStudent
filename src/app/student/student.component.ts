@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Student, Sexe, Classe, Serie } from './student.model';
 import { ApiService } from '../shared/api.service';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-student',
@@ -10,13 +13,18 @@ import { ApiService } from '../shared/api.service';
 })
 export class StudentComponent implements OnInit {
 
+  private apiUrl = 'http://localhost:3000/students';
+
   showAdd!: boolean;
   showUpdate!: boolean;
   studentModelObj: Student = new Student();
   formValue!: FormGroup;
   allStudents!: any[];
 
-  constructor(private formBuilder: FormBuilder, private api: ApiService) { }
+  //constructor(private formBuilder: FormBuilder, private api: ApiService) { }
+
+  constructor(private formBuilder: FormBuilder, private api: ApiService, private httpClient: HttpClient) { }
+  
 
   ngOnInit(): void {
     this.formValue = this.formBuilder.group({
@@ -103,5 +111,8 @@ export class StudentComponent implements OnInit {
       });
     }
   }
-}
 
+  fetchData(): Observable<Student[]> {
+    return this.httpClient.get<Student[]>(this.apiUrl);
+  }
+}
